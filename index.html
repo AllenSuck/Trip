@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東京 8 天 7 夜自由行｜互動行程表</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card-bg: #ffffff;
+    --ink: #2b2b2b;
+    --ink-soft: #6b6b6b;
+    --accent: #c94f4f;
+    --accent-soft: #f4dede;
+    --line: #e7e3dc;
+    --tag-transport: #4a7fb5;
+    --tag-sight: #4f9d69;
+    --tag-food: #c98a3c;
+    --tag-shop: #9b5fb0;
+    --tag-stay: #6b6b6b;
+    --warn: #d97706;
+    --warn-bg: #fef3c7;
+    --radius: 14px;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    padding-bottom: 60px;
+  }
+
+  header.hero {
+    background: linear-gradient(135deg, #c94f4f 0%, #e0765f 100%);
+    color: #fff;
+    padding: 32px 20px 48px;
+    text-align: center;
+  }
+
+  header.hero h1 {
+    margin: 0 0 6px;
+    font-size: 1.7rem;
+  }
+
+  header.hero p.sub {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+
+  .countdown {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .countdown .box {
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-width: 64px;
+  }
+
+  .countdown .box .num {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+  }
+
+  .countdown .box .label {
+    font-size: 0.7rem;
+    opacity: 0.85;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: -28px auto 0;
+    padding: 0 16px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .info-grid .item .k {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+
+  .info-grid .item .v {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .badge-undecided {
+    display: inline-block;
+    background: var(--warn-bg);
+    color: var(--warn);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    margin-left: 4px;
+  }
+
+  nav.tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 12px;
+    margin-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  nav.tabs button {
+    flex: 0 0 auto;
+    border: none;
+    background: #fff;
+    color: var(--ink-soft);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  nav.tabs button.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .day-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+
+  .day-date {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid var(--line);
+  }
+
+  .timeline .entry {
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .timeline .entry:last-child { padding-bottom: 0; }
+
+  .timeline .entry::before {
+    content: "";
+    position: absolute;
+    left: -26px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .entry .time {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  .entry .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: #fff;
+    padding: 1px 8px;
+    border-radius: 999px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .tag.交通 { background: var(--tag-transport); }
+  .tag.景點 { background: var(--tag-sight); }
+  .tag.餐飲 { background: var(--tag-food); }
+  .tag.購物 { background: var(--tag-shop); }
+  .tag.住宿 { background: var(--tag-stay); }
+
+  .entry .name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 4px 0 2px;
+  }
+
+  .entry .note {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 4px;
+  }
+
+  .map-link:hover { text-decoration: underline; }
+
+  /* Packing checklist */
+  .pack-progress {
+    background: var(--line);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+
+  .pack-progress-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.2s ease;
+  }
+
+  .pack-category h3 {
+    font-size: 0.95rem;
+    margin: 16px 0 8px;
+    color: var(--ink);
+  }
+
+  .pack-category:first-of-type h3 { margin-top: 0; }
+
+  label.pack-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    font-size: 0.92rem;
+    border-bottom: 1px dashed var(--line);
+    cursor: pointer;
+  }
+
+  label.pack-item input {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--accent);
+  }
+
+  label.pack-item.checked span {
+    text-decoration: line-through;
+    color: var(--ink-soft);
+  }
+
+  .todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .todo-list li {
+    padding: 6px 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .footnote {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>🗼 東京 8 天 7 夜自由行</h1>
+  <p class="sub">2026-09-05（六）— 2026-09-12（六）</p>
+  <div class="countdown" id="countdown">
+    <div class="box"><span class="num" id="cd-days">--</span><span class="label">天</span></div>
+    <div class="box"><span class="num" id="cd-hours">--</span><span class="label">時</span></div>
+    <div class="box"><span class="num" id="cd-mins">--</span><span class="label">分</span></div>
+    <div class="box"><span class="num" id="cd-secs">--</span><span class="label">秒</span></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card" id="info-card"></div>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="card" id="day-content"></div>
+
+  <p class="footnote"> 公主請上車!👸。</p>
+</div>
+
+<script>
+/* ========= 可編輯資料區：把下面內容換成你的實際行程即可 ========= */
+
+const basicInfo = {
+  "目的地": "日本・東京",
+  "出發日期": "2026-09-05（六）",
+  "去程航班": "虎航 IT200",
+  "天數": "8 天 7 夜",
+  "回程日期": "2026-09-12（六）",
+  "回程航班": "虎航 IT203",
+  "交通票券": "Suica、富士回遊",
+  "住宿": "東武黎凡特、河口湖東橫INN、格拉斯麗淺草"
+};
+
+// 用來算倒數計時的實際出發時間
+const departureDateTime = "2026-09-05T09:00:00";
+
+const tripData = [
+  {
+    day: 1, date: "2026-09-05（六）", title: "抵達東京・淺草文化巡禮",
+    items: [
+      { time: "11:00", type: "交通", name: "抵達成田機場，入境、領行李", note: "可於機場購買 Suica" },
+      { time: "15:30", type: "交通", name: "前往東武黎凡特飯店", note: "交通方式【未定】：Skyliner／N'EX／利木津巴士" },
+      { time: "18:00", type: "景點", name: "淺草寺、雷門、仲見世通", note: "晚上人潮較少，適合拍照" },
+      { time: "19:30", type: "餐飲", name: "淺草晚餐", note: "餐廳【未定】" }
+    ]
+  },
+  {
+    day: 2, date: "2026-09-06（日）", title: "澀谷・原宿・新宿",
+    items: [
+      { time: "10:00", type: "景點", name: "明治神宮", note: "" },
+      { time: "12:00", type: "餐飲", name: "原宿竹下通午餐、逛街", note: "" },
+      { time: "15:00", type: "景點", name: "澀谷scramble十字路口、澀谷天空展望台", note: "【未定】是否購票" },
+      { time: "19:00", type: "餐飲", name: "新宿歌舞伎町夜景、晚餐", note: "餐廳【未定】" }
+    ]
+  },
+  {
+    day: 3, date: "2026-09-07（一）", title: "東京迪士尼樂園（全天）",
+    items: [
+      { time: "08:00", type: "景點", name: "進場東京迪士尼樂園", note: "建議提前買票、下載 App 排隊" },
+      { time: "12:30", type: "餐飲", name: "樂園內午餐", note: "" },
+      { time: "18:30", type: "餐飲", name: "樂園內晚餐", note: "" },
+      { time: "21:00", type: "景點", name: "觀賞夜間遊行／煙火", note: "時間依當日公告為準" }
+    ]
+  },
+  {
+    day: 4, date: "2026-09-08（二）", title: "東京迪士尼海洋樂園（全天）",
+    items: [
+      { time: "08:00", type: "景點", name: "進場東京迪士尼海洋樂園", note: "建議提前買票、下載 App 排隊" },
+      { time: "12:30", type: "餐飲", name: "樂園內午餐", note: "" },
+      { time: "18:30", type: "餐飲", name: "樂園內晚餐", note: "" },
+      { time: "21:00", type: "景點", name: "觀賞夜間表演／煙火", note: "時間依當日公告為準" }
+    ]
+  },
+  {
+    day: 5, date: "2026-09-09（三）", title: "新宿→河口湖・山中湖",
+    items: [
+      { time: "08:30", type: "交通", name: "新宿車站搭乘「富士回遊」特急列車", note: "建議事先預約指定席" },
+      { time: "10:30", type: "交通", name: "抵達河口湖車站，辦理租車手續", note: "租車公司【未定】" },
+      { time: "11:30", type: "交通", name: "自駕前往山中湖", note: "" },
+      { time: "12:30", type: "餐飲", name: "山中湖午餐", note: "餐廳【未定】" },
+      { time: "14:00", type: "景點", name: "山中湖景點遊覽（湖畔散步、富士山眺望點）", note: "" },
+      { time: "18:00", type: "交通", name: "自駕返回河口湖", note: "" },
+      { time: "19:00", type: "住宿", name: "入住河口湖東橫INN，晚餐", note: "餐廳【未定】" }
+    ]
+  },
+  {
+    day: 6, date: "2026-09-10（四）", title: "河口湖・返回東京",
+    items: [
+      { time: "09:00", type: "景點", name: "河口湖景點遊覽", note: "例如音樂盒之森、新倉山淺間公園【未定】確認細節" },
+      { time: "12:00", type: "餐飲", name: "河口湖午餐", note: "餐廳【未定】" },
+      { time: "14:00", type: "景點", name: "河口湖周邊景點／購物", note: "" },
+      { time: "16:00", type: "交通", name: "河口湖返回東京（新宿）", note: "交通方式【未定】：巴士／富士回遊" },
+      { time: "19:00", type: "住宿", name: "入住淺草格拉斯麗飯店，晚餐", note: "餐廳【未定】" }
+    ]
+  },
+  {
+    day: 7, date: "2026-09-11（五）", title: "銀座・東京鐵塔・六本木",
+    items: [
+      { time: "10:00", type: "購物", name: "銀座購物", note: "【未定】預算" },
+      { time: "13:00", type: "餐飲", name: "銀座午餐", note: "餐廳【未定】" },
+      { time: "15:00", type: "景點", name: "東京鐵塔", note: "" },
+      { time: "18:00", type: "餐飲", name: "六本木之丘夜景、晚餐", note: "餐廳【未定】" }
+    ]
+  },
+  {
+    day: 8, date: "2026-09-12（六）", title: "賦歸",
+    items: [
+      { time: "09:00", type: "住宿", name: "飯店退房", note: "" },
+      { time: "10:00", type: "交通", name: "前往機場", note: "交通【未定】" },
+      { time: "13:00", type: "交通", name: "搭機返程", note: "航班【未定】" }
+    ]
+  }
+];
+
+const todoList = [
+  "去程 / 回程航班資訊",
+  "飯店訂房資訊與地址",
+  "各天餐廳選擇",
+  "迪士尼樂園／海洋樂園門票，河口湖租車與飯店確認",
+  "交通方式（機場往返、鎌倉一日遊）",
+  "總預算抓算"
+];
+
+const packingData = [
+  { category: "證件與財務", items: ["護照", "簽證（如需要）", "機票／訂房憑證", "日幣現金", "信用卡"] },
+  { category: "電子產品", items: ["手機＋充電線", "行動電源", "萬用轉接頭", "相機／記憶卡"] },
+  { category: "衣物", items: ["衣物（依天數＋1）", "外套", "備用鞋襪", "雨具"] },
+  { category: "盥洗與藥品", items: ["盥洗用品", "個人藥品", "口罩"] },
+  { category: "其他", items: ["行動網卡／WiFi機", "隨身小包", "購物用行李袋"] }
+];
+
+/* ========= 以下為渲染邏輯，通常不需要修改 ========= */
+
+function withBadge(text) {
+  if (!text) return "";
+  return text.replace(/【未定】/g, '<span class="badge-undecided">待確認</span>');
+}
+
+function renderInfoCard() {
+  const el = document.getElementById("info-card");
+  const rows = Object.entries(basicInfo).map(([k, v]) => `
+    <div class="item">
+      <div class="k">${k}</div>
+      <div class="v">${withBadge(v)}</div>
+    </div>
+  `).join("");
+  el.innerHTML = `<div class="info-grid">${rows}</div>`;
+}
+
+function mapUrl(name) {
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("東京 " + name);
+}
+
+function renderTabs() {
+  const el = document.getElementById("tabs");
+  let html = "";
+  tripData.forEach(d => {
+    html += `<button data-tab="day-${d.day}">Day ${d.day}</button>`;
+  });
+  html += `<button data-tab="packing">🧳 行前清單</button>`;
+  el.innerHTML = html;
+
+  el.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      el.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const tab = btn.getAttribute("data-tab");
+      if (tab === "packing") {
+        renderPacking();
+      } else {
+        const dayNum = parseInt(tab.split("-")[1], 10);
+        renderDay(dayNum);
+      }
+    });
+  });
+}
+
+function renderDay(dayNum) {
+  const d = tripData.find(x => x.day === dayNum);
+  const el = document.getElementById("day-content");
+  if (!d) return;
+
+  const entries = d.items.map(item => `
+    <div class="entry">
+      <div class="time">${item.time}<span class="tag ${item.type}">${item.type}</span></div>
+      <div class="name">${item.name}</div>
+      ${item.note ? `<div class="note">${withBadge(item.note)}</div>` : ""}
+      <a class="map-link" href="${mapUrl(item.name)}" target="_blank" rel="noopener">📍 在地圖上查看</a>
+    </div>
+  `).join("");
+
+  el.innerHTML = `
+    <div class="day-title">Day ${d.day}｜${d.title}</div>
+    <div class="day-date">${d.date}</div>
+    <div class="timeline">${entries}</div>
+  `;
+}
+
+function renderPacking() {
+  const el = document.getElementById("day-content");
+  let html = `<div class="day-title">行前準備清單</div>
+    <div class="day-date">勾選項目會自動儲存在本機瀏覽器</div>
+    <div class="pack-progress"><div class="pack-progress-bar" id="pack-bar"></div></div>`;
+
+  packingData.forEach((cat, ci) => {
+    html += `<div class="pack-category"><h3>${cat.category}</h3>`;
+    cat.items.forEach((item, ii) => {
+      const id = `pack-${ci}-${ii}`;
+      html += `
+        <label class="pack-item" for="${id}">
+          <input type="checkbox" id="${id}" data-id="${id}">
+          <span>${item}</span>
+        </label>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `<h3 style="margin-top:20px;">尚待確認事項</h3><ul class="todo-list">`;
+  todoList.forEach(t => { html += `<li>☐ ${t}</li>`; });
+  html += `</ul>`;
+
+  el.innerHTML = html;
+
+  const checkboxes = el.querySelectorAll('input[type="checkbox"]');
+  const bar = document.getElementById("pack-bar");
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    const checked = [...checkboxes].filter(c => c.checked).length;
+    bar.style.width = (total ? (checked / total * 100) : 0) + "%";
+  }
+
+  checkboxes.forEach(cb => {
+    const saved = localStorage.getItem(cb.dataset.id);
+    if (saved === "true") {
+      cb.checked = true;
+      cb.closest("label").classList.add("checked");
+    }
+    cb.addEventListener("change", () => {
+      localStorage.setItem(cb.dataset.id, cb.checked);
+      cb.closest("label").classList.toggle("checked", cb.checked);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+}
+
+function tickCountdown() {
+  const target = new Date(departureDateTime).getTime();
+  const now = Date.now();
+  const diff = target - now;
+
+  const daysEl = document.getElementById("cd-days");
+  const hoursEl = document.getElementById("cd-hours");
+  const minsEl = document.getElementById("cd-mins");
+  const secsEl = document.getElementById("cd-secs");
+
+  if (diff <= 0) {
+    daysEl.textContent = "0";
+    hoursEl.textContent = "0";
+    minsEl.textContent = "0";
+    secsEl.textContent = "0";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  daysEl.textContent = days;
+  hoursEl.textContent = hours;
+  minsEl.textContent = mins;
+  secsEl.textContent = secs;
+}
+
+renderInfoCard();
+renderTabs();
+document.querySelector('nav.tabs button[data-tab="day-1"]').classList.add("active");
+renderDay(1);
+tickCountdown();
+setInterval(tickCountdown, 1000);
+</script>
+
+</body>
+</html>
