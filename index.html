@@ -34,7 +34,9 @@
   }
 
   header.hero {
-    background: linear-gradient(135deg, #c94f4f 0%, #e0765f 100%);
+    background:
+      linear-gradient(135deg, rgba(201,79,79,0.75) 0%, rgba(224,118,95,0.75) 100%),
+      url('fuji.jpg') center / cover no-repeat;
     color: #fff;
     padding: 32px 20px 48px;
     text-align: center;
@@ -326,10 +328,10 @@
 
 const basicInfo = {
   "目的地": "日本・東京",
+  "天數": "8 天 7 夜",  
   "出發日期": "2026-09-05（六）",
-  "去程航班": "虎航 IT200",
-  "天數": "8 天 7 夜",
   "回程日期": "2026-09-12（六）",
+  "去程航班": "虎航 IT200",
   "回程航班": "虎航 IT203",
   "交通票券": "Suica、富士回遊",
   "住宿": "東武黎凡特、河口湖東橫INN、格拉斯麗淺草"
@@ -343,7 +345,7 @@ const tripData = [
     day: 1, date: "2026-09-05（六）", title: "抵達東京・淺草文化巡禮",
     items: [
       { time: "11:00", type: "交通", name: "抵達成田機場，入境、領行李", note: "可於機場購買 Suica" },
-      { time: "15:30", type: "交通", name: "前往東武黎凡特飯店", note: "交通方式【未定】：Skyliner／N'EX／利木津巴士" },
+      { time: "15:30", type: "交通", name: "東武黎凡特飯店", note: "交通方式【未定】：Skyliner／N'EX／利木津巴士" },
       { time: "18:00", type: "景點", name: "淺草寺、雷門、仲見世通", note: "晚上人潮較少，適合拍照" },
       { time: "19:30", type: "餐飲", name: "淺草晚餐", note: "餐廳【未定】" }
     ]
@@ -384,7 +386,7 @@ const tripData = [
       { time: "12:30", type: "餐飲", name: "山中湖午餐", note: "餐廳【未定】" },
       { time: "14:00", type: "景點", name: "山中湖景點遊覽（湖畔散步、富士山眺望點）", note: "" },
       { time: "18:00", type: "交通", name: "自駕返回河口湖", note: "" },
-      { time: "19:00", type: "住宿", name: "入住河口湖東橫INN，晚餐", note: "餐廳【未定】" }
+      { time: "19:00", type: "住宿", name: "入住河口湖東橫INN", note: "餐廳【未定】" }
     ]
   },
   {
@@ -409,9 +411,9 @@ const tripData = [
   {
     day: 8, date: "2026-09-12（六）", title: "賦歸",
     items: [
-      { time: "09:00", type: "住宿", name: "飯店退房", note: "" },
-      { time: "10:00", type: "交通", name: "前往機場", note: "交通【未定】" },
-      { time: "13:00", type: "交通", name: "搭機返程", note: "航班【未定】" }
+      { time: "10:00", type: "住宿", name: "飯店退房", note: "" },
+      { time: "15:00", type: "交通", name: "前往機場", note: "交通【未定】" },
+      { time: "19:30", type: "交通", name: "搭機返程", note: "航班【未定】" }
     ]
   }
 ];
